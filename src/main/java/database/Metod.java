@@ -215,7 +215,7 @@ public class Metod {
                 System.out.println("connection is null");
             } else {
                 preparedStatement = connection.prepareStatement(UPDATEBYPASSWORD);
-                preparedStatement.setInt(1,newPassword );
+                preparedStatement.setInt(1, newPassword);
                 preparedStatement.setInt(2, id);
                 preparedStatement.execute();
             }
@@ -230,5 +230,44 @@ public class Metod {
             }
         }
     }
-}
 
+
+    public List<Users> selectOrderByName() {
+
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        List<Users> newUser = new ArrayList<>();
+
+        try {
+            connection = JdbcConnection.getConnection();
+            if (connection == null) {
+                System.out.println("conccection is null");
+            } else {
+                preparedStatement = connection.prepareStatement(SELECTBYORDERBYNAME);
+                resultSet = preparedStatement.executeQuery();
+                while (resultSet.next()) {
+                    Users users = new Users();
+                    users.setId(resultSet.getInt("id"));
+                    users.setFirstName(resultSet.getString("firstname"));
+                    users.setLastName(resultSet.getString("lastname"));
+                    users.setPassword(resultSet.getInt("password"));
+                    newUser.add(users);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            try {
+                JdbcConnection.closeConnection(connection);
+                JdbcConnection.closePreparedStatement(preparedStatement);
+                JdbcConnection.closeResultSet(resultSet);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return newUser;
+    }
+
+
+}

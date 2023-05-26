@@ -17,9 +17,14 @@ public class Main {
         }
         System.out.println("-------------------------------");
         System.out.println(metod.selectById(1).getFirstName() + " " + metod.selectById(1).getLastName());*/
-        Metod metod=new Metod();
+      /*  Metod metod=new Metod();
         //metod.deleteAll();
        // metod.deleteById(2);
-        metod.updateByPassword(1,25);
+        metod.updateByPassword(1,25);*/
+        Metod metod=new Metod();
+        List<Users> newUser=metod.selectOrderByName();
+        for (Users user:newUser) {
+            System.out.println(user.getId()+":{"+user.getFirstName()+"-"+user.getLastName()+ "-"+user.getPassword()+"}");
+        }
     }
 }
